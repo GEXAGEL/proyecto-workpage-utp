@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+    <div class="container">
+        <a class="navbar-brand fw-bold fs-3" th:href="@{/}">
+            <i class="fas fa-mobile-alt me-2"></i>TechCell
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav ms-auto me-3">
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/}">Inicio</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/productos}">Productos</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/contacto}">Contacto</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" th:href="@{/nosotros}">Nosotros</a>
+                </li>
+            </ul>
+
+            <!-- Botón del Carrito -->
+            <button class="btn btn-outline-light position-relative me-3"
+                    data-bs-toggle="offcanvas"
+                    data-bs-target="#carritoOffcanvas"
+                    id="btnCarrito">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                      id="cantidadCarrito"
+                      style="display: none;">
+                        0
+                    </span>
+            </button>
+
+            <!-- Mostrar botón Login si NO hay sesión -->
+            <div th:if="${usuarioLogueado == null}">
+                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
+                    <i class="fas fa-user me-1"></i>Login
+                </button>
+            </div>
+
+            <!-- Menú desplegable si HAY sesión -->
+            <div th:if="${usuarioLogueado != null}" class="dropdown">
+                <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="fas fa-user-circle me-2"></i>
+                    Hola, <strong th:text="${usuarioLogueado.username}">Usuario</strong>
+                </button>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                    <li>
+                        <a class="dropdown-item" th:href="@{/perfil}">
+                            <i class="fas fa-user-edit me-2"></i>Tu Perfil
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item text-danger" href="#" data-bs-toggle="modal" data-bs-target="#eliminarCuentaModal">
+                            <i class="fas fa-user-times me-2"></i>Eliminar Cuenta
+                        </a>
+                    </li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                        <a class="dropdown-item" th:href="@{/login/cerrar}">
+                            <i class="fas fa-sign-out-alt me-2"></i>Cerrar Sesión
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</nav>
+</body>
+</html>

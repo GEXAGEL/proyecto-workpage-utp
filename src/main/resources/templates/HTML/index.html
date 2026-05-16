@@ -1,49 +1,22 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>TechCell - Tienda de Celulares</title>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="/css/Styles.css">
+    <link rel="stylesheet" th:href="@{/css/Styles.css}">
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
-        <div class="container">
-            <a class="navbar-brand fw-bold fs-3" th:href="@{/index}">
-                <i class="fas fa-mobile-alt me-2"></i>TechCell
-            </a>
-            
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto me-3">
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/index}">Inicio</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/productos}">Productos</a>
-                    </li>
-                    <!--<li class="nav-item">
-                        <a class="nav-link" th:href="#marcas">NO SE</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="#ofertas">NO SE</a>
-                    </li> -->
-                    <li class="nav-item">
-                        <a class="nav-link" th:href="@{/contacto}">Contacto</a>
-                    </li>
-                </ul>
-                <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#loginModal">
-                    <i class="fas fa-user me-1"></i>Login
-                </button>
-            </div>
-        </div>
-    </nav>
+    
+    <!-- Incluir Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Incluir Mensajes de Alerta -->
+    <div th:replace="~{fragments/mensajes :: alertas}"></div>
+
+    
 
     <!-- Hero Section -->
     <div class="hero-section d-flex align-items-center" id="inicio">
@@ -58,12 +31,11 @@
                         rendimiento excepcional y precios increíbles
                     </p>
                     <div class="d-flex gap-3 flex-wrap">
-                        <a th:href="@{/productos}"><button class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
-                            <i class="fas fa-shopping-cart me-2"></i>Ver Catálogo
-                        </button></a>
-                        <!--<button class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">
-                            <i class="fas fa-play me-2"></i>Ver Demo
-                        </button>-->
+                        <a th:href="@{/productos}">
+                            <button class="btn btn-primary btn-lg px-5 py-3 rounded-pill">
+                                <i class="fas fa-shopping-cart me-2"></i>Ver Catálogo
+                            </button>
+                        </a>
                     </div>
                 </div>
                 <div class="col-lg-6 text-center">
@@ -75,7 +47,6 @@
         </div>
     </div>
 
-
     <!-- Productos Section -->
     <div class="container my-5" id="productos">
         <h2 class="text-center mb-5">Nuestros Productos</h2>
@@ -83,7 +54,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body text-center">
-                        <img src="../IMG/iPhone15.png" width="140px" class="mb-3" >
+                        <img th:src="@{/IMG/iPhone15.png}" width="140px" class="mb-3" alt="iPhone 15">
                         <h5 class="card-title">iPhone 15</h5>
                         <h4 class="text-primary">Precio: S/ 3,299.00</h4>
                         <button class="btn btn-primary">Comprar</button>
@@ -93,7 +64,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body text-center">
-                        <img src="../IMG/SAMSUNGS24.jpg" width="200px">
+                        <img th:src="@{/IMG/SAMSUNGS24.jpg}" width="200px" alt="Samsung Galaxy S24">
                         <h5 class="card-title">Samsung Galaxy S24</h5>
                         <h4 class="text-primary">Precio: S/ 4,949.00</h4>
                         <button class="btn btn-primary">Comprar</button>
@@ -103,7 +74,7 @@
             <div class="col-md-4 mb-4">
                 <div class="card h-100 shadow-sm">
                     <div class="card-body text-center">
-                        <img src="../IMG/XIAOMI14.webp" width="200px">
+                        <img th:src="@{/IMG/XIAOMI14.webp}" width="200px" alt="Xiaomi Mi 14">
                         <h5 class="card-title">Xiaomi Mi 14</h5>
                         <h4 class="text-primary">Precio: S/ 1,129.00</h4>
                         <button class="btn btn-primary">Comprar</button>
@@ -134,138 +105,19 @@
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer class="bg-dark text-white py-4">
-        <div class="container">
-            <div class="row">
-                <div class="col-md-4">
-                    <h5><i class="fas fa-mobile-alt me-2"></i>TechCell</h5>
-                    <p>Tu tienda de confianza para celulares y tecnología</p>
-                </div>
-                <div class="col-md-4">
-                    <h5>Contacto</h5>
-                    <p><i class="fas fa-phone me-2"></i>+51 904343558</p>
-                    <p><i class="fas fa-envelope me-2"></i>techcell@gmail.com</p>
-                </div>
-                <div class="col-md-4">
-        <h5>Síguenos</h5>
-        <a href="https://facebook.com" target="_blank" class="text-white me-3">
-          <i class="fab fa-facebook fa-2x"></i>
-        </a>
-        <a href="https://instagram.com" target="_blank" class="text-white me-3">
-          <i class="fab fa-instagram fa-2x"></i>
-        </a>
-        <a href="https://twitter.com" target="_blank" class="text-white">
-          <i class="fab fa-twitter fa-2x"></i>
-        </a>
-      </div>
-                
-            </div>
-            <hr class="my-3">
-            <div class="text-center">
-                <p>&copy; 2026 UTP. Todos los derechos reservados.</p>
-            </div>
-        </div>
-    </footer>
+    <!-- Incluir Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
 
-    <!-- Modal Login -->
-    <div class="modal fade" id="loginModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header text-white border-0">
-                    <h4 class="modal-title fw-bold">
-                        <i class="fas fa-user me-3"></i>Iniciar Sesión
-                    </h4>
-                    <button type="button" class="btn-close btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-5">
-                    <form>
-                        <div class="mb-4">
-                            <label for="username" class="form-label fw-semibold">Username</label>
-                            <input type="text" class="form-control form-control-lg" id="username" placeholder="Nombre de usuario" required>
-                        </div>
-                        <div class="mb-4">
-                            <label for="password" class="form-label fw-semibold">Contraseña</label>
-                            <input type="password" class="form-control form-control-lg" id="password" placeholder="Tu contraseña segura" required>
-                        </div>
-                        <div class="mb-4">
-                            <div class="form-check">
-                                <input type="checkbox" class="form-check-input" id="remember">
-                                <label class="form-check-label" for="remember">
-                                    Mantener mi sesión activa
-                                </label>
-                            </div>
-                        </div>
-                        <div class="d-flex gap-3">
-                            <button type="button" class="btn btn-primary btn-lg w-50 rounded-pill mb-3">
-                                <i class="fas fa-sign-in-alt me-2"></i>Iniciar Sesión
-                            </button>
-                            <button type="button" class="btn btn-success btn-lg w-50 rounded-pill mb-3" data-bs-toggle="modal" data-bs-target="#registroModal">
-                                <i class="fa-solid fa-user-plus me-2"></i>Registrarse
-                            </button>
-                        </div>
-                        <div class="text-center">
-                            <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <!-- Incluir Modales -->
+    <div th:replace="~{fragments/modales :: modales}"></div>
 
-    <!-- Modal Registro -->
-    <div class="modal fade" id="registroModal" tabindex="-1" aria-labelledby="tituloModalRegistro" aria-hidden="true">
-        <div class="modal-dialog modal-lg modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header text-white">
-                    <h4 class="modal-title" id="tituloModalRegistro">
-                        <i class="fa-solid fa-user-plus me-2"></i>Nuevo usuario
-                    </h4>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Cerrar"></button>
-                </div>
-                <div class="modal-body">
-                    <form>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="usernameRegistro" class="form-label fw-semibold">Username</label>
-                                <input type="text" class="form-control form-control-lg" id="usernameRegistro" placeholder="Ingresa un nombre de usuario" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="passwordRegistro" class="form-label fw-semibold">Contraseña</label>
-                                <input type="password" class="form-control form-control-lg" id="passwordRegistro" placeholder="Ingrese su contraseña" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-12">
-                                <label for="email" class="form-label fw-semibold">Email</label>
-                                <input type="email" class="form-control form-control-lg" id="email" placeholder="demo@example.com" required>
-                            </div>
-                        </div>
-                        <div class="row mb-3">
-                            <div class="col-md-6">
-                                <label for="telefono" class="form-label fw-semibold">Telefono</label>
-                                <input type="tel" class="form-control form-control-lg" id="telefono" placeholder="123456789" required>
-                            </div>
-                            <div class="col-md-6">
-                                <label for="direccion" class="form-label fw-semibold">Direccion</label>
-                                <input type="text" class="form-control form-control-lg" id="direccion" placeholder="Ingresa tu direccion" required>
-                            </div>
-                        </div>
-                        <div class="d-flex gap-3 mt-4">
-                            <button type="button" class="btn btn-primary btn-lg w-50 rounded-pill mb-3">
-                                <i class="fa-solid fa-floppy-disk me-2"></i>Guardar
-                            </button>
-                            <button type="button" class="btn btn-danger btn-lg w-50 rounded-pill mb-3" data-bs-dismiss="modal">
-                                <i class="fa-solid fa-ban me-2"></i>Cancelar
-                            </button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div th:replace="~{fragments/modalCarrito :: modalCarrito}"></div>
+    
+    <!-- Incluir Botón WhatsApp -->
+    <div th:replace="~{fragments/botonwsp :: botonWhatsApp}"></div>
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/carrito.js}"></script>
 </body>
 </html>

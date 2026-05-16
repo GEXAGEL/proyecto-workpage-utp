@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nosotros - TechCell</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/Styles.css}">
+</head>
+<body>
+    <!-- Navbar -->
+    <div th:replace="~{fragments/navbar :: navbar}"></div>
+
+    <!-- Incluir Mensajes de Alerta -->
+    <div th:replace="~{fragments/mensajes :: alertas}"></div>
+
+    <!-- Hero Section -->
+    <div class="hero-section d-flex align-items-center" style="min-height: 400px;">
+        <div class="container hero-content">
+            <div class="row align-items-center">
+                <div class="col-lg-8 mx-auto text-center">
+                    <h1 class="display-3 fw-bold text-warning mb-4">
+                        Sobre TechCell
+                    </h1>
+                    <p class="lead fw-normal text-black mb-4 fs-4">
+                        Conectando personas con la mejor tecnología móvil desde 2020
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Nuestra Historia -->
+    <section class="container py-5">
+        <div class="row align-items-center mb-5">
+            <div class="col-lg-6 mb-4 mb-lg-0">
+                <div class="text-center">
+                    <i class="fas fa-store text-primary" style="font-size: 8rem; opacity: 0.8;"></i>
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <h2 class="fw-bold mb-4">Nuestra Historia</h2>
+                <p class="text-muted fs-5 mb-3">
+                    TechCell nació en 2020 con una misión clara: democratizar el acceso a la tecnología móvil de última generación en Perú. Lo que comenzó como una pequeña tienda en el centro de Lima, se ha convertido en una de las tiendas de celulares más confiables del país.
+                </p>
+                <p class="text-muted fs-5">
+                    Hoy contamos con miles de clientes satisfechos que confían en nosotros para adquirir sus dispositivos móviles, gracias a nuestro compromiso con la calidad, precios competitivos y un servicio al cliente excepcional.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Misión y Visión -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <div class="row g-4">
+                <div class="col-md-6">
+                    <div class="bg-white p-5 rounded shadow-sm h-100">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-bullseye text-primary" style="font-size: 3.5rem;"></i>
+                        </div>
+                        <h3 class="fw-bold text-center mb-4">Nuestra Misión</h3>
+                        <p class="text-muted fs-5 text-center">
+                            Ofrecer a nuestros clientes los mejores dispositivos móviles del mercado con precios accesibles, garantizando una experiencia de compra excepcional y un servicio postventa de calidad superior.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="bg-white p-5 rounded shadow-sm h-100">
+                        <div class="text-center mb-4">
+                            <i class="fas fa-eye text-warning" style="font-size: 3.5rem;"></i>
+                        </div>
+                        <h3 class="fw-bold text-center mb-4">Nuestra Visión</h3>
+                        <p class="text-muted fs-5 text-center">
+                            Ser la tienda de tecnología móvil líder en Perú, reconocida por nuestra innovación, confiabilidad y compromiso con la satisfacción del cliente, expandiendo nuestra presencia a nivel nacional.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Valores -->
+    <section class="container py-5">
+        <h2 class="text-center fw-bold mb-5">Nuestros Valores</h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-shield-alt text-primary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Confianza</h4>
+                    <p class="text-muted">
+                        Construimos relaciones duraderas basadas en la transparencia y honestidad en cada transacción.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-star text-warning" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Calidad</h4>
+                    <p class="text-muted">
+                        Ofrecemos solo productos originales y de las mejores marcas del mercado mundial.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-heart text-danger" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Compromiso</h4>
+                    <p class="text-muted">
+                        Nos dedicamos completamente a la satisfacción de nuestros clientes antes, durante y después de la venta.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-lightbulb text-info" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Innovación</h4>
+                    <p class="text-muted">
+                        Siempre a la vanguardia, ofreciendo los dispositivos más recientes y tecnología de punta.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-users text-success" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Cercanía</h4>
+                    <p class="text-muted">
+                        Tratamos a cada cliente como parte de nuestra familia TechCell, con atención personalizada.
+                    </p>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="text-center p-4">
+                    <div class="mb-3">
+                        <i class="fas fa-hands-helping text-secondary" style="font-size: 3rem;"></i>
+                    </div>
+                    <h4 class="fw-bold mb-3">Responsabilidad</h4>
+                    <p class="text-muted">
+                        Actuamos con integridad y ética profesional en todas nuestras operaciones comerciales.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ¿Por qué elegirnos? -->
+    <section class="bg-light py-5">
+        <div class="container">
+            <h2 class="text-center fw-bold mb-5">¿Por Qué Elegir TechCell?</h2>
+            <div class="row g-4">
+                <div class="col-md-6 col-lg-3">
+                    <div class="bg-white p-4 rounded shadow-sm text-center h-100">
+                        <i class="fas fa-certificate text-primary mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold mb-3">Productos Originales</h5>
+                        <p class="text-muted mb-0">100% auténticos con garantía oficial de fábrica</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="bg-white p-4 rounded shadow-sm text-center h-100">
+                        <i class="fas fa-truck text-success mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold mb-3">Envío Rápido</h5>
+                        <p class="text-muted mb-0">Entrega en 24-48 horas en Lima Metropolitana</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="bg-white p-4 rounded shadow-sm text-center h-100">
+                        <i class="fas fa-credit-card text-info mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold mb-3">Pago Seguro</h5>
+                        <p class="text-muted mb-0">Múltiples métodos de pago con protección total</p>
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-3">
+                    <div class="bg-white p-4 rounded shadow-sm text-center h-100">
+                        <i class="fas fa-headset text-warning mb-3" style="font-size: 2.5rem;"></i>
+                        <h5 class="fw-bold mb-3">Soporte 24/7</h5>
+                        <p class="text-muted mb-0">Atención al cliente disponible todo el día</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Estadísticas -->
+    <section class="container py-5">
+        <div class="row text-center g-4">
+            <div class="col-md-3">
+                <div class="p-4">
+                    <i class="fas fa-users text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h2 class="fw-bold text-primary mb-2">10,000+</h2>
+                    <p class="text-muted fs-5">Clientes Satisfechos</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4">
+                    <i class="fas fa-mobile-alt text-success mb-3" style="font-size: 3rem;"></i>
+                    <h2 class="fw-bold text-success mb-2">15,000+</h2>
+                    <p class="text-muted fs-5">Productos Vendidos</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4">
+                    <i class="fas fa-award text-warning mb-3" style="font-size: 3rem;"></i>
+                    <h2 class="fw-bold text-warning mb-2">5</h2>
+                    <p class="text-muted fs-5">Años de Experiencia</p>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="p-4">
+                    <i class="fas fa-star text-danger mb-3" style="font-size: 3rem;"></i>
+                    <h2 class="fw-bold text-danger mb-2">4.8/5</h2>
+                    <p class="text-muted fs-5">Calificación Promedio</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Call to Action -->
+    <section class="bg-primary text-white py-5">
+        <div class="container text-center">
+            <h2 class="fw-bold mb-4">¿Listo para tu nuevo celular?</h2>
+            <p class="lead mb-4">Descubre nuestra amplia gama de productos y encuentra el dispositivo perfecto para ti</p>
+            <div class="d-flex gap-3 justify-content-center flex-wrap">
+                <a th:href="@{/productos}">
+                    <button class="btn btn-light btn-lg px-5 py-3 rounded-pill">
+                        <i class="fas fa-shopping-cart me-2"></i>Ver Productos
+                    </button>
+                </a>
+                <a th:href="@{/contacto}">
+                    <button class="btn btn-outline-light btn-lg px-5 py-3 rounded-pill">
+                        <i class="fas fa-envelope me-2"></i>Contáctanos
+                    </button>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Incluir Footer -->
+    <div th:replace="~{fragments/footer :: footer}"></div>
+
+    <!-- Incluir Modales -->
+    <div th:replace="~{fragments/modales :: modales}"></div>
+
+    <div th:replace="~{fragments/modalCarrito :: modalCarrito}"></div>
+
+    <!-- Incluir Botón WhatsApp -->
+    <div th:replace="~{fragments/botonwsp :: botonWhatsApp}"></div>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/carrito.js}"></script>
+</body>
+</html>
