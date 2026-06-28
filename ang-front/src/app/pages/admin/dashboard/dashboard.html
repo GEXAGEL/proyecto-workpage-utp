@@ -1,0 +1,49 @@
+<div class="container my-5">
+    <h1 class="text-center mb-5 fw-bold">
+        <i class="fas fa-tachometer-alt me-2"></i>Panel de Administración
+    </h1>
+
+    <div class="row g-4 justify-content-center">
+        <!-- Card Productos -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-box-open text-primary mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="card-title fw-bold">Productos</h5>
+                    <p class="card-text">Gestiona el inventario de productos</p>
+                    <a routerLink="/admin/productos" class="btn btn-primary">
+                        <i class="fas fa-cog me-2"></i>Gestionar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Usuarios -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-users text-success mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="card-title fw-bold">Usuarios</h5>
+                    <p class="card-text">Administra usuarios del sistema</p>
+                    <a routerLink="/admin/usuarios" class="btn btn-success">
+                        <i class="fas fa-cog me-2"></i>Gestionar
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card Facturas -->
+        <div class="col-md-6 col-lg-3">
+            <div class="card text-center h-100 shadow-sm">
+                <div class="card-body">
+                    <i class="fas fa-file-invoice text-info mb-3" style="font-size: 3rem;"></i>
+                    <h5 class="card-title fw-bold">Facturas</h5>
+                    <p class="card-text">Ver historial de ventas</p>
+                    <a routerLink="/admin/facturas" class="btn btn-info">
+                        <i class="fas fa-eye me-2"></i>Ver
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

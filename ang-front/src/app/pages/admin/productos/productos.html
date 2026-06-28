@@ -1,0 +1,187 @@
+<div class="container my-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="fw-bold"><i class="fas fa-box-open me-2"></i>Gestión de Productos</h2>
+        <div class="d-flex gap-2">
+            <button class="btn btn-secondary" (click)="goBack()">
+                <i class="fas fa-arrow-left me-2"></i>Volver al Panel
+            </button>
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#agregarProductoModal">
+                <i class="fas fa-plus me-2"></i>Agregar Producto
+            </button>
+        </div>
+    </div>
+
+    <div class="table-responsive shadow-sm rounded">
+        <table class="table table-striped table-hover align-middle">
+            <thead class="table-dark">
+            <tr>
+                <th>ID</th>
+                <th>Imagen</th>
+                <th>Nombre</th>
+                <th>Precio</th>
+                <th>Stock</th>
+                <th>Categoría</th>
+                <th>Acciones</th>
+            </tr>
+            </thead>
+            <tbody>
+            @for (producto of productos(); track producto.id) {
+                <tr>
+                    <td>{{ producto.id }}</td>
+                    <td>
+                        <img [src]="producto.imagen"
+                             style="max-width: 50px; max-height: 50px; object-fit: contain;">
+                    </td>
+                    <td class="fw-semibold">{{ producto.nombre }}</td>
+                    <td>S/ {{ producto.precio | number:'1.2-2' }}</td>
+                    <td>
+                        <span class="badge"
+                              [ngClass]="{
+                                'bg-success': producto.stock > 10,
+                                'bg-warning text-dark': producto.stock > 0 && producto.stock <= 10,
+                                'bg-danger': producto.stock === 0
+                              }">
+                            {{ producto.stock }}
+                        </span>
+                    </td>
+                    <td>{{ producto.categoria }}</td>
+                    <td>
+                        <button class="btn btn-sm btn-info text-white me-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#actualizarStockModal"
+                                (click)="openStockModal(producto)">
+                            <i class="fas fa-layer-group"></i>
+                        </button>
+                        <button class="btn btn-sm btn-warning me-1"
+                                data-bs-toggle="modal"
+                                data-bs-target="#editarProductoModal"
+                                (click)="openEditModal(producto)">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button (click)="onEliminar(producto.id)" class="btn btn-sm btn-danger">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            } @empty {
+                <tr>
+                    <td colspan="7" class="text-center py-4 text-muted">
+                        No hay productos en el catálogo
+                    </td>
+                </tr>
+            }
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<!-- Modal Agregar Producto -->
+<div class="modal fade" id="agregarProductoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title fw-bold">Agregar Producto</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form (ngSubmit)="onAgregar()">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" [(ngModel)]="newProducto.nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Precio</label>
+                        <input type="number" step="0.01" class="form-control" name="precio" [(ngModel)]="newProducto.precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Stock</label>
+                        <input type="number" class="form-control" name="stock" [(ngModel)]="newProducto.stock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Imagen (Ruta)</label>
+                        <input type="text" class="form-control" name="imagen" [(ngModel)]="newProducto.imagen" placeholder="/IMG/producto.jpg" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Categoría</label>
+                        <select class="form-control" name="categoria" [(ngModel)]="newProducto.categoria" required>
+                            <option value="Celulares">Celulares</option>
+                            <option value="Accesorios">Accesorios</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-primary">Guardar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Editar Producto -->
+<div class="modal fade" id="editarProductoModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-warning">
+                <h5 class="modal-title fw-bold">Editar Producto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <form (ngSubmit)="onEditar()">
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nombre</label>
+                        <input type="text" class="form-control" name="nombre" [(ngModel)]="editProducto.nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Precio</label>
+                        <input type="number" step="0.01" class="form-control" name="precio" [(ngModel)]="editProducto.precio" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Stock</label>
+                        <input type="number" class="form-control" name="stock" [(ngModel)]="editProducto.stock" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Imagen (Ruta)</label>
+                        <input type="text" class="form-control" name="imagen" [(ngModel)]="editProducto.imagen" required>
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Categoría</label>
+                        <select class="form-control" name="categoria" [(ngModel)]="editProducto.categoria" required>
+                            <option value="Celulares">Celulares</option>
+                            <option value="Accesorios">Accesorios</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Actualizar Stock -->
+<div class="modal fade" id="actualizarStockModal" tabindex="-1">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header bg-info text-white">
+                <h5 class="modal-title fw-bold">Actualizar Stock</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+            </div>
+            <form (ngSubmit)="onActualizarStock()">
+                <div class="modal-body">
+                    <p class="mb-3">Producto: <strong class="text-primary">{{ stockUpdate.nombre }}</strong></p>
+                    <div class="mb-3">
+                        <label class="form-label fw-semibold">Nuevo Stock</label>
+                        <input type="number" class="form-control" name="stock" [(ngModel)]="stockUpdate.stock" required>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-info text-white">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

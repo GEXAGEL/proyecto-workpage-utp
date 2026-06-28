@@ -1,0 +1,60 @@
+<div class="container my-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0 fw-bold">
+                        <i class="fas fa-user-circle me-2"></i>Mi Perfil
+                    </h3>
+                </div>
+                <div class="card-body p-4">
+                    <form (ngSubmit)="onSave()">
+                        <div class="row mb-3">
+                            <div class="col-md-6">
+                                <label for="username" class="form-label fw-semibold">
+                                    <i class="fas fa-user me-1"></i>Username
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="username" name="username" [value]="userForm.username" readonly>
+                                <small class="text-muted">El username no se puede modificar</small>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="email" class="form-label fw-semibold">
+                                    <i class="fas fa-envelope me-1"></i>Email
+                                </label>
+                                <input type="email" class="form-control form-control-lg" id="email" name="email" [(ngModel)]="userForm.email" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="nombreCompleto" class="form-label fw-semibold">
+                                    <i class="fas fa-id-card me-1"></i>Nombre Completo
+                                </label>
+                                <input type="text" class="form-control form-control-lg" id="nombreCompleto" name="nombreCompleto" [(ngModel)]="userForm.nombreCompleto" required>
+                            </div>
+                        </div>
+                        
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <label for="password" class="form-label fw-semibold">
+                                    <i class="fas fa-lock me-1"></i>Contraseña
+                                </label>
+                                <input type="password" class="form-control form-control-lg" id="password" name="password" [(ngModel)]="userForm.password">
+                                <small class="text-muted">Ingresa una nueva contraseña si deseas cambiarla (deja en blanco para mantener la actual)</small>
+                            </div>
+                        </div>
+                        
+                        <div class="d-flex gap-3 mt-4">
+                            <button type="submit" class="btn btn-primary btn-lg">
+                                <i class="fas fa-save me-2"></i>Guardar Cambios
+                            </button>
+                            <a routerLink="/" class="btn btn-secondary btn-lg">
+                                <i class="fas fa-times me-2"></i>Cancelar
+                            </a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

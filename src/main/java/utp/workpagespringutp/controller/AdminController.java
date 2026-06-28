@@ -1,18 +1,18 @@
 package utp.workpagespringutp.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utp.workpagespringutp.model.Producto;
 import utp.workpagespringutp.model.Usuario;
 import utp.workpagespringutp.service.ProductoService;
 import utp.workpagespringutp.service.UsuarioService;
 import utp.workpagespringutp.service.FacturaService;
 
-@Controller
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 @RequestMapping("/admin")
 public class AdminController {
 
@@ -25,142 +25,135 @@ public class AdminController {
     @Autowired
     private FacturaService facturaService;
 
-    // Dashboard principal
-    @GetMapping({"/dashboard", ""})
-    public String dashboard(HttpSession session, Model model) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("usuario", usuario);
-        return "admin/dashboard";
-    }
-
     // ============ GESTIÓN DE PRODUCTOS ============
 
     @GetMapping("/productos")
-    public String listarProductos(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("productos", productoService.obtenerTodosLosProductos());
-        return "admin/productos";
+    public ResponseEntity<?> listarProductos() {
+        return ResponseEntity.ok(productoService.obtenerTodosLosProductos());
     }
 
     @PostMapping("/productos/agregar")
-    public String agregarProducto(@ModelAttribute Producto producto, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> agregarProducto(@RequestBody Producto producto) {
+        Map<String, Object> response = new HashMap<>();
         try {
             productoService.guardarProducto(producto);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Producto agregado exitosamente");
+            response.put("success", true);
+            response.put("message", "Producto agregado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al agregar producto: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al agregar producto: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/productos";
     }
 
     @PostMapping("/productos/actualizar/{id}")
-    public String actualizarProducto(@PathVariable Long id, @ModelAttribute Producto producto, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> actualizarProducto(@PathVariable Long id, @RequestBody Producto producto) {
+        Map<String, Object> response = new HashMap<>();
         try {
             producto.setId(id);
             productoService.actualizarProducto(producto);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Producto actualizado exitosamente");
+            response.put("success", true);
+            response.put("message", "Producto actualizado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al actualizar producto: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al actualizar producto: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/productos";
     }
 
     @PostMapping("/productos/eliminar/{id}")
-    public String eliminarProducto(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> eliminarProducto(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
         try {
             productoService.eliminarProducto(id);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Producto eliminado exitosamente");
+            response.put("success", true);
+            response.put("message", "Producto eliminado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al eliminar producto: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al eliminar producto: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/productos";
     }
 
     @PostMapping("/productos/actualizar-stock/{id}")
-    public String actualizarStock(@PathVariable Long id, @RequestParam Integer stock, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> actualizarStock(@PathVariable Long id, @RequestParam Integer stock) {
+        Map<String, Object> response = new HashMap<>();
         try {
             productoService.actualizarStock(id, stock);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Stock actualizado exitosamente");
+            response.put("success", true);
+            response.put("message", "Stock actualizado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al actualizar stock: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al actualizar stock: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/productos";
     }
 
     // ============ GESTIÓN DE USUARIOS ============
 
     @GetMapping("/usuarios")
-    public String listarUsuarios(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("usuarios", usuarioService.obtenerTodosLosUsuarios());
-        return "admin/usuarios";
+    public ResponseEntity<?> listarUsuarios() {
+        return ResponseEntity.ok(usuarioService.obtenerTodosLosUsuarios());
     }
 
     @PostMapping("/usuarios/cambiar-rol/{id}")
-    public String cambiarRol(@PathVariable Long id, @RequestParam String nuevoRol, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> cambiarRol(@PathVariable Long id, @RequestParam String nuevoRol) {
+        Map<String, Object> response = new HashMap<>();
         try {
             usuarioService.cambiarRol(id, nuevoRol);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Rol actualizado exitosamente");
+            response.put("success", true);
+            response.put("message", "Rol actualizado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al actualizar rol: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al actualizar rol: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/usuarios";
     }
 
     @PostMapping("/usuarios/eliminar/{id}")
-    public String eliminarUsuario(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> eliminarUsuario(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
         try {
             usuarioService.eliminarCuenta(id);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Usuario eliminado exitosamente");
+            response.put("success", true);
+            response.put("message", "Usuario eliminado exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al eliminar usuario: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al eliminar usuario: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/usuarios";
     }
 
     // ============ GESTIÓN DE FACTURAS ============
 
     @GetMapping("/facturas")
-    public String listarFacturas(Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("facturas", facturaService.obtenerTodasLasFacturas());
-        return "admin/facturas";
+    public ResponseEntity<?> listarFacturas() {
+        return ResponseEntity.ok(facturaService.obtenerTodasLasFacturas());
     }
 
     @GetMapping("/facturas/{id}")
-    public String verDetalleFactura(@PathVariable Long id, Model model, HttpSession session) {
-        Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
-        if (usuario == null) {
-            return "redirect:/";
-        }
-        model.addAttribute("usuario", usuario);
-        model.addAttribute("factura", facturaService.obtenerFacturaPorId(id).orElse(null));
-        return "admin/detalle-factura";
+    public ResponseEntity<?> verDetalleFactura(@PathVariable Long id) {
+        return ResponseEntity.ok(facturaService.obtenerFacturaPorId(id).orElse(null));
     }
 
     @PostMapping("/facturas/eliminar/{id}")
-    public String eliminarFactura(@PathVariable Long id, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> eliminarFactura(@PathVariable Long id) {
+        Map<String, Object> response = new HashMap<>();
         try {
             facturaService.eliminarFactura(id);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Factura eliminada exitosamente");
+            response.put("success", true);
+            response.put("message", "Factura eliminada exitosamente");
+            return ResponseEntity.ok(response);
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al eliminar factura: " + e.getMessage());
+            response.put("success", false);
+            response.put("message", "Error al eliminar factura: " + e.getMessage());
+            return ResponseEntity.ok(response);
         }
-        return "redirect:/admin/facturas";
     }
 }

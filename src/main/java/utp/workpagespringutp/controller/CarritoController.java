@@ -3,7 +3,6 @@ package utp.workpagespringutp.controller;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import utp.workpagespringutp.model.*;
 import utp.workpagespringutp.service.CarritoService;
@@ -14,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Controller
+@RestController
 @RequestMapping("/carrito")
 public class CarritoController {
 
@@ -25,7 +24,6 @@ public class CarritoController {
     private ProductoService productoService;
 
     @PostMapping("/agregar")
-    @ResponseBody
     public ResponseEntity<?> agregarAlCarrito(
             @RequestParam Long productoId,
             @RequestParam(defaultValue = "1") Integer cantidad,
@@ -60,7 +58,6 @@ public class CarritoController {
     }
 
     @PostMapping("/eliminar/{itemId}")
-    @ResponseBody
     public ResponseEntity<?> eliminarDelCarrito(
             @PathVariable Long itemId,
             HttpSession session) {
@@ -87,7 +84,6 @@ public class CarritoController {
     }
 
     @PostMapping("/actualizar/{itemId}")
-    @ResponseBody
     public ResponseEntity<?> actualizarCantidad(
             @PathVariable Long itemId,
             @RequestParam Integer cantidad,
@@ -115,7 +111,6 @@ public class CarritoController {
     }
 
     @PostMapping("/finalizar")
-    @ResponseBody
     public ResponseEntity<?> finalizarCompra(HttpSession session) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         Map<String, Object> response = new HashMap<>();
@@ -139,7 +134,6 @@ public class CarritoController {
     }
 
     @GetMapping("/datos")
-    @ResponseBody
     public ResponseEntity<?> obtenerDatosCarrito(HttpSession session) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
 

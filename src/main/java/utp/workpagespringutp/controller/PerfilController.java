@@ -2,74 +2,87 @@ package utp.workpagespringutp.controller;
 
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import utp.workpagespringutp.model.Usuario;
 import utp.workpagespringutp.service.UsuarioService;
 
-@Controller
+import java.util.HashMap;
+import java.util.Map;
+
+@RestController
 @RequestMapping("/perfil")
 public class PerfilController {
     
     @Autowired
     private UsuarioService usuarioService;
     
-    // Mostrar página de perfil
+    // Mostrar página de perfil (retornar datos del usuario)
     @GetMapping
-    public String mostrarPerfil(HttpSession session, Model model) {
+    public ResponseEntity<?> mostrarPerfil(HttpSession session) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         
         if (usuarioLogueado == null) {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No has iniciado sesión");
         }
         
-        model.addAttribute("usuario", usuarioLogueado);
-        return "html/perfil";
+        return ResponseEntity.ok(usuarioLogueado);
     }
     
     // Actualizar perfil
     @PostMapping("/actualizar")
-    public String actualizarPerfil(@ModelAttribute Usuario usuario, 
-                                    HttpSession session, 
-                                    RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> actualizarPerfil(@RequestBody Usuario usuario, HttpSession session) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         
         if (usuarioLogueado == null) {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No has iniciado sesión");
         }
         
         // Mantener el ID y actualizar solo los campos editables
         usuario.setId(usuarioLogueado.getId());
+        // El rol y la contraseña no deberían cambiarse así directamente en perfil, o si no se especifican se mantienen
+        if (usuario.getRol() == null) {
+            usuario.setRol(usuarioLogueado.getRol());
+        }
+        if (usuario.getPassword() == null || usuario.getPassword().isEmpty()) {
+            usuario.setPassword(usuarioLogueado.getPassword());
+        }
         
+        Map<String, Object> response = new HashMap<>();
         if (usuarioService.actualizarUsuario(usuario)) {
             // Actualizar la sesión con los nuevos datos
             session.setAttribute("usuarioLogueado", usuario);
-            redirectAttributes.addFlashAttribute("mensajeExito", "Perfil actualizado correctamente");
+            response.put("success", true);
+            response.put("message", "Perfil actualizado correctamente");
+            response.put("usuario", usuario);
+            return ResponseEntity.ok(response);
         } else {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al actualizar el perfil");
+            response.put("success", false);
+            response.put("message", "Error al actualizar el perfil");
+            return ResponseEntity.ok(response);
         }
-        
-        return "redirect:/perfil";
     }
     
     // Eliminar cuenta
     @PostMapping("/eliminar")
-    public String eliminarCuenta(HttpSession session, RedirectAttributes redirectAttributes) {
+    public ResponseEntity<?> eliminarCuenta(HttpSession session) {
         Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
         
         if (usuarioLogueado == null) {
-            return "redirect:/";
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("No has iniciado sesión");
         }
         
+        Map<String, Object> response = new HashMap<>();
         if (usuarioService.eliminarCuenta(usuarioLogueado.getId())) {
             session.invalidate();
-            redirectAttributes.addFlashAttribute("mensajeExito", "Cuenta eliminada exitosamente");
+            response.put("success", true);
+            response.put("message", "Cuenta eliminada exitosamente");
+            return ResponseEntity.ok(response);
         } else {
-            redirectAttributes.addFlashAttribute("mensajeError", "Error al eliminar la cuenta");
+            response.put("success", false);
+            response.put("message", "Error al eliminar la cuenta");
+            return ResponseEntity.ok(response);
         }
-        
-        return "redirect:/";
     }
 }

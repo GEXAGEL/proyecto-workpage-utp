@@ -1,0 +1,32 @@
+{
+  "/api": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/login": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/carrito": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/perfil": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/admin": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  },
+  "/logout": {
+    "target": "http://localhost:8080",
+    "secure": false,
+    "logLevel": "debug"
+  }
+}

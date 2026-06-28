@@ -1,5 +1,6 @@
 package utp.workpagespringutp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,5 +22,6 @@ public class DetalleFactura {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "factura_id")
+    @JsonIgnore
     private Factura factura;
 }

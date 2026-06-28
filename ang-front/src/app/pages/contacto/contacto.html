@@ -1,0 +1,47 @@
+<section class="container py-5">
+    <div class="text-center mb-5">
+        <h2 class="fw-bold">¿Tienes alguna pregunta?</h2>
+        <p class="text-muted">¡Nos encantaría ayudarte! Comunícate con nosotros o visítanos directamente.</p>
+    </div>
+
+    <div class="row g-4">
+        <!-- Dirección física -->
+        <div class="col-lg-5">
+            <div class="bg-light p-4 rounded shadow-sm h-100">
+                <h4 class="mt-2 mb-3"><i class="fas fa-map-marker-alt me-2 text-danger"></i> Dirección física</h4>
+                <p>Av. Abancay 123, Cercado de Lima, Lima - Perú</p>
+                <div class="ratio ratio-4x3 rounded">
+                    <iframe 
+                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3900.920643026504!2d-77.02938012588992!3d-12.05047494232973!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x9105c8c05c2878e3%3A0x9a3f261e29a28b4a!2sAv.%20Abancay%20123%2C%20Lima%2015001!5e0!3m2!1ses!2spe!4v1721066612345" 
+                        loading="lazy"
+                        referrerpolicy="no-referrer-when-downgrade">
+                    </iframe>
+                </div>
+            </div>
+        </div>
+
+        <!-- Formulario de contacto -->
+        <div class="col-lg-7">
+            <div class="bg-light p-4 rounded shadow-sm h-100">
+                <h4 class="mb-4"><i class="fas fa-envelope me-2 text-primary"></i> Envíanos un mensaje</h4>
+                <form (submit)="onSubmit($event)">
+                    <div class="mb-3">
+                        <label for="nombre" class="form-label fw-semibold">Nombre</label>
+                        <input type="text" class="form-control form-control-lg" id="nombre" placeholder="Tu nombre completo" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="correo" class="form-label fw-semibold">Correo electrónico</label>
+                        <input type="email" class="form-control form-control-lg" id="correo" placeholder="tu@email.com" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="mensaje" class="form-label fw-semibold">Mensaje</label>
+                        <textarea class="form-control form-control-lg" id="mensaje" rows="5" placeholder="Escribe tu mensaje aquí..." required></textarea>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-lg w-100 rounded-pill">
+                        <i class="fas fa-paper-plane me-2"></i>Enviar mensaje
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>

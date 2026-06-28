@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,4 +38,12 @@ public class Factura {
         this.detalleFacturas.add(detalleFactura);
         detalleFactura.setFactura(this);
     }
+
+    @Transient
+    public BigDecimal getTotal() {
+        return detalleFacturas.stream()
+                .map(d -> d.getPrecioUnitario().multiply(BigDecimal.valueOf(d.getCantidad())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
 }
