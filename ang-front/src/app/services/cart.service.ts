@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class CartService {
   constructor(private http: HttpClient) {}
 
   public loadCart(): Observable<any> {
-    return this.http.get<any>('/carrito/datos').pipe(
+    return this.http.get<any>(`${environment.apiUrl}/carrito/datos`).pipe(
       tap(data => {
         this.cartData.set(data);
         const count = data.items ? data.items.reduce((sum: number, item: any) => sum + item.cantidad, 0) : 0;
@@ -23,7 +24,7 @@ export class CartService {
 
   public addToCart(productoId: number, cantidad: number = 1): Observable<any> {
     const params = { productoId: productoId.toString(), cantidad: cantidad.toString() };
-    return this.http.post<any>('/carrito/agregar', null, { params }).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/carrito/agregar`, null, { params }).pipe(
       tap(res => {
         if (res && res.success) {
           this.loadCart().subscribe();
@@ -33,7 +34,7 @@ export class CartService {
   }
 
   public removeFromCart(itemId: number): Observable<any> {
-    return this.http.post<any>(`/carrito/eliminar/${itemId}`, {}).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/carrito/eliminar/${itemId}`, {}).pipe(
       tap(res => {
         if (res && res.success) {
           this.loadCart().subscribe();
@@ -44,7 +45,7 @@ export class CartService {
 
   public updateQuantity(itemId: number, cantidad: number): Observable<any> {
     const params = { cantidad: cantidad.toString() };
-    return this.http.post<any>(`/carrito/actualizar/${itemId}`, null, { params }).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/carrito/actualizar/${itemId}`, null, { params }).pipe(
       tap(res => {
         if (res && res.success) {
           this.loadCart().subscribe();
@@ -54,7 +55,7 @@ export class CartService {
   }
 
   public checkout(): Observable<any> {
-    return this.http.post<any>('/carrito/finalizar', {}).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/carrito/finalizar`, {}).pipe(
       tap(res => {
         if (res && res.success) {
           this.cartData.set({ items: [], total: 0.0 });

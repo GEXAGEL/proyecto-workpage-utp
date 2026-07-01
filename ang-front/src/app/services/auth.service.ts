@@ -1,6 +1,7 @@
 import { Injectable, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable, tap } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class AuthService {
   constructor(private http: HttpClient) {}
 
   public checkStatus(): Observable<any> {
-    return this.http.get<any>('/login/status').pipe(
+    return this.http.get<any>(`${environment.apiUrl}/login/status`).pipe(
       tap(res => {
         if (res && res.autenticado) {
           this.currentUser.set(res.usuario);
@@ -26,7 +27,7 @@ export class AuthService {
   }
 
   public login(credentials: any): Observable<any> {
-    return this.http.post<any>('/login/iniciar', credentials).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/login/iniciar`, credentials).pipe(
       tap(res => {
         if (res && res.success) {
           this.currentUser.set(res.usuario);
@@ -37,11 +38,11 @@ export class AuthService {
   }
 
   public register(user: any): Observable<any> {
-    return this.http.post<any>('/login/registrar', user);
+    return this.http.post<any>(`${environment.apiUrl}/login/registrar`, user);
   }
 
   public logout(): Observable<any> {
-    return this.http.post<any>('/login/cerrar', {}).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/login/cerrar`, {}).pipe(
       tap(() => {
         this.currentUser.set(null);
         this.isAuthenticated.set(false);
@@ -50,7 +51,7 @@ export class AuthService {
   }
 
   public updateProfile(user: any): Observable<any> {
-    return this.http.post<any>('/perfil/actualizar', user).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/perfil/actualizar`, user).pipe(
       tap(res => {
         if (res && res.success) {
           this.currentUser.set(res.usuario);
@@ -60,7 +61,7 @@ export class AuthService {
   }
 
   public deleteAccount(): Observable<any> {
-    return this.http.post<any>('/perfil/eliminar', {}).pipe(
+    return this.http.post<any>(`${environment.apiUrl}/perfil/eliminar`, {}).pipe(
       tap(res => {
         if (res && res.success) {
           this.currentUser.set(null);
