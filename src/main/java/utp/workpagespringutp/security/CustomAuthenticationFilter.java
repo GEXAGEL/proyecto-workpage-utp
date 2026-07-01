@@ -4,14 +4,13 @@ import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
-import utp.workpagespringutp.model.Usuario;
 
 import java.io.IOException;
+import java.util.Base64;
 import java.util.Collections;
 
 public class CustomAuthenticationFilter extends OncePerRequestFilter {
@@ -20,29 +19,31 @@ public class CustomAuthenticationFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
 
-        HttpSession session = request.getSession(false);
+        // 1. Atrapamos el Token que envía el Interceptor de Angular
+        String authHeader = request.getHeader("Authorization");
 
-        // Si existe sesión HTTP y hay un usuario logueado
-        if (session != null) {
-            Usuario usuario = (Usuario) session.getAttribute("usuarioLogueado");
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+            try {
+                String token = authHeader.substring(7); // Quitamos "Bearer "
+                
+                // 2. Decodificamos el Token Ligero
+                byte[] decodedBytes = Base64.getDecoder().decode(token);
+                String decodedString = new String(decodedBytes);
+                String[] parts = decodedString.split(":"); // Separamos username y rol
+                
+                if (parts.length == 2) {
+                    String username = parts[0];
+                    String rol = "ROLE_" + parts[1];
 
-            // Si hay usuario en sesión pero no hay autenticación en Spring Security
-            if (usuario != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-
-                // Crear la autoridad con el prefijo ROLE_
-                String rol = "ROLE_" + usuario.getRol();
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol);
-
-                // Crear el token de autenticación
-                UsernamePasswordAuthenticationToken authentication =
-                        new UsernamePasswordAuthenticationToken(
-                                usuario.getUsername(),
-                                null,
-                                Collections.singletonList(authority)
-                        );
-
-                // Establecer la autenticación en el contexto de Spring Security
-                SecurityContextHolder.getContext().setAuthentication(authentication);
+                    // 3. Le decimos a Spring Security "¡Este usuario tiene permiso!"
+                    SimpleGrantedAuthority authority = new SimpleGrantedAuthority(rol);
+                    UsernamePasswordAuthenticationToken authentication =
+                            new UsernamePasswordAuthenticationToken(username, null, Collections.singletonList(authority));
+                    
+                    SecurityContextHolder.getContext().setAuthentication(authentication);
+                }
+            } catch (Exception e) {
+                // Si el token está mal formado, simplemente lo ignoramos y Spring Security bloqueará la ruta
             }
         }
 

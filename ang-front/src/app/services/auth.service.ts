@@ -30,6 +30,8 @@ export class AuthService {
     return this.http.post<any>(`${environment.apiUrl}/login/iniciar`, credentials).pipe(
       tap(res => {
         if (res && res.success) {
+          // GUARDAMOS EL TOKEN EN EL NAVEGADOR
+          localStorage.setItem('token', res.token); 
           this.currentUser.set(res.usuario);
           this.isAuthenticated.set(true);
         }
@@ -44,6 +46,8 @@ export class AuthService {
   public logout(): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/login/cerrar`, {}).pipe(
       tap(() => {
+        // ELIMINAMOS EL TOKEN
+        localStorage.removeItem('token');
         this.currentUser.set(null);
         this.isAuthenticated.set(false);
       })
