@@ -1,12 +1,14 @@
 package utp.workpagespringutp.controller;
 
-import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import utp.workpagespringutp.model.*;
 import utp.workpagespringutp.service.CarritoService;
 import utp.workpagespringutp.service.ProductoService;
+import utp.workpagespringutp.service.UsuarioService;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -23,13 +25,25 @@ public class CarritoController {
     @Autowired
     private ProductoService productoService;
 
+    @Autowired
+    private UsuarioService usuarioService; // Añadimos este servicio para buscar al usuario
+
+    // Método ayudante para leer el token de Spring Security
+    private Usuario obtenerUsuarioAutenticado() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        if (auth != null && auth.isAuthenticated() && !auth.getPrincipal().equals("anonymousUser")) {
+            String username = (String) auth.getPrincipal();
+            return usuarioService.obtenerUsuario(username).orElse(null);
+        }
+        return null;
+    }
+
     @PostMapping("/agregar")
     public ResponseEntity<?> agregarAlCarrito(
             @RequestParam Long productoId,
-            @RequestParam(defaultValue = "1") Integer cantidad,
-            HttpSession session) {
+            @RequestParam(defaultValue = "1") Integer cantidad) {
 
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        Usuario usuarioLogueado = obtenerUsuarioAutenticado();
         Map<String, Object> response = new HashMap<>();
 
         if (usuarioLogueado == null) {
@@ -58,11 +72,8 @@ public class CarritoController {
     }
 
     @PostMapping("/eliminar/{itemId}")
-    public ResponseEntity<?> eliminarDelCarrito(
-            @PathVariable Long itemId,
-            HttpSession session) {
-
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+    public ResponseEntity<?> eliminarDelCarrito(@PathVariable Long itemId) {
+        Usuario usuarioLogueado = obtenerUsuarioAutenticado();
         Map<String, Object> response = new HashMap<>();
 
         if (usuarioLogueado == null) {
@@ -86,10 +97,9 @@ public class CarritoController {
     @PostMapping("/actualizar/{itemId}")
     public ResponseEntity<?> actualizarCantidad(
             @PathVariable Long itemId,
-            @RequestParam Integer cantidad,
-            HttpSession session) {
+            @RequestParam Integer cantidad) {
 
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+        Usuario usuarioLogueado = obtenerUsuarioAutenticado();
         Map<String, Object> response = new HashMap<>();
 
         if (usuarioLogueado == null) {
@@ -111,8 +121,8 @@ public class CarritoController {
     }
 
     @PostMapping("/finalizar")
-    public ResponseEntity<?> finalizarCompra(HttpSession session) {
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+    public ResponseEntity<?> finalizarCompra() {
+        Usuario usuarioLogueado = obtenerUsuarioAutenticado();
         Map<String, Object> response = new HashMap<>();
 
         if (usuarioLogueado == null) {
@@ -134,8 +144,8 @@ public class CarritoController {
     }
 
     @GetMapping("/datos")
-    public ResponseEntity<?> obtenerDatosCarrito(HttpSession session) {
-        Usuario usuarioLogueado = (Usuario) session.getAttribute("usuarioLogueado");
+    public ResponseEntity<?> obtenerDatosCarrito() {
+        Usuario usuarioLogueado = obtenerUsuarioAutenticado();
 
         if (usuarioLogueado == null) {
             Map<String, Object> response = new HashMap<>();

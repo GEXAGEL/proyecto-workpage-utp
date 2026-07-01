@@ -30,7 +30,7 @@ export class AuthService {
     return this.http.post<any>(`${environment.apiUrl}/login/iniciar`, credentials).pipe(
       tap(res => {
         if (res && res.success) {
-          // GUARDAMOS EL TOKEN EN EL NAVEGADOR
+          // ESTA ES LA LÍNEA CRÍTICA QUE GUARDA EL TOKEN:
           localStorage.setItem('token', res.token); 
           this.currentUser.set(res.usuario);
           this.isAuthenticated.set(true);
