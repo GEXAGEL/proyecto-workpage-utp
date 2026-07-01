@@ -14,6 +14,6 @@ export class ProductService {
     if (categoria && categoria !== 'Todos') {
       params.categoria = categoria;
     }
-    return this.http.get<any[]>(`${environment.apiUrl}/productos`, { params });
+    return this.http.get<any[]>(`${environment.apiUrl}/api/productos`, { params });
   }
 }
