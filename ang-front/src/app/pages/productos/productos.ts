@@ -32,8 +32,11 @@ export class Productos implements OnInit {
     });
   }
 
-  public onAddToCart(productoId: number): void {
-    if (!this.auth.isAuthenticated()) {
+public onAddToCart(productoId: number): void {
+    // 1. Validamos usando el token real que guardamos en el navegador
+    const token = localStorage.getItem('token');
+
+    if (!token) {
       this.mostrarAlerta('Debes iniciar sesión para agregar productos al carrito', 'warning');
       const modalElement = document.getElementById('loginModal');
       if (modalElement) {
@@ -43,6 +46,7 @@ export class Productos implements OnInit {
       return;
     }
 
+    // 2. Si el token existe, el interceptor lo inyectará automáticamente
     this.cart.addToCart(productoId).subscribe({
       next: (res) => {
         if (res.success) {
