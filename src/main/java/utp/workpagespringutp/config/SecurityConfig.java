@@ -32,7 +32,13 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:4200"));
+        
+        // Agregamos el dominio de Vercel a la lista permitida
+        configuration.setAllowedOrigins(List.of(
+            "http://localhost:4200", 
+            "https://proyecto-workpage-utp.vercel.app"
+        ));
+        
         configuration.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(List.of("Authorization", "Cache-Control", "Content-Type"));
         configuration.setAllowCredentials(true);
