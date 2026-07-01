@@ -10,7 +10,7 @@ export class CartService {
   public cartData = signal<any>({ items: [], total: 0.0 });
   public cartCount = signal<number>(0);
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient) { }
 
   public loadCart(): Observable<any> {
     return this.http.get<any>(`${environment.apiUrl}/carrito/datos`).pipe(
@@ -22,16 +22,24 @@ export class CartService {
     );
   }
 
-  public addToCart(productoId: number, cantidad: number = 1): Observable<any> {
-    const params = { productoId: productoId.toString(), cantidad: cantidad.toString() };
-    return this.http.post<any>(`${environment.apiUrl}/carrito/agregar`, null, { params }).pipe(
-      tap(res => {
-        if (res && res.success) {
-          this.loadCart().subscribe();
-        }
-      })
-    );
-  }
+public addToCart(productoId: number, cantidad: number = 1): Observable<any> {
+  const params = { productoId: productoId.toString(), cantidad: cantidad.toString() };
+  
+  // Agregamos headers para ser explícitos y evitar bloqueos de seguridad
+  const headers = { 'Content-Type': 'application/json' };
+
+  return this.http.post<any>(`${environment.apiUrl}/carrito/agregar`, null, { 
+    params, 
+    headers, // <-- añadimos los headers
+    withCredentials: true 
+  }).pipe(
+    tap(res => {
+      if (res && res.success) {
+        this.loadCart().subscribe();
+      }
+    })
+  );
+}
 
   public removeFromCart(itemId: number): Observable<any> {
     return this.http.post<any>(`${environment.apiUrl}/carrito/eliminar/${itemId}`, {}).pipe(
